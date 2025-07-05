@@ -154,6 +154,7 @@ const GlobalStyles = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
     font-family: 'Roboto', sans-serif;
+    background-color: #f6f6f6; 
   }
 
   /* Remove all animations and transitions for people that prefer not to see them */

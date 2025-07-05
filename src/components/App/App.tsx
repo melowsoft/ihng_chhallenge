@@ -1,7 +1,8 @@
 import React, { useCallback, useState } from "react";
-import GlobalStyles from "./styles/GlobalStyles";
-import "./App.css";
-import Header from "./components/Header";
+import Header from "../Header";
+import Sidebar from "../Sidebar";
+
+import { AppContainer } from "./styles";
 
 function App() {
   const [showConnections, setShowConnections] = useState(true);
@@ -20,8 +21,8 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <GlobalStyles />
+    <AppContainer>
+      <Sidebar />
       <Header
         userName="Emily Carter"
         title="Cardiologist at NHOG"
@@ -31,7 +32,7 @@ function App() {
         onToggleConnections={handleToggleConnections}
         onToggleConnectionsOnMap={handleToggleConnectionsOnMap}
       />
-    </div>
+    </AppContainer>
   );
 }
 

@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const AppHeader = styled.header`
   display: flex;
+  flex: 1;
   align-items: center;
   justify-content: space-between;
   padding: 16px 24px;
@@ -9,6 +10,7 @@ export const AppHeader = styled.header`
   border-bottom: 1px solid #e5e7eb;
   height: 64px;
   box-sizing: content-box;
+  border-radius: 12px;
 `;
 
 export const HeaderLeft = styled.div`
