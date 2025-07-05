@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import Header from "../Header";
 import Sidebar from "../Sidebar";
 
-import { AppContainer } from "./styles";
+import { AppContainer, MainContent } from "./styles";
 
 function App() {
   const [showConnections, setShowConnections] = useState(true);
@@ -23,15 +23,18 @@ function App() {
   return (
     <AppContainer>
       <Sidebar />
-      <Header
-        userName="Emily Carter"
-        title="Cardiologist at NHOG"
-        onCreateWeb={handleCreateWeb}
-        showConnections={showConnections}
-        showConnectionsOnMap={showConnectionOnTheMap}
-        onToggleConnections={handleToggleConnections}
-        onToggleConnectionsOnMap={handleToggleConnectionsOnMap}
-      />
+
+      <MainContent>
+        <Header
+          userName="Emily Carter"
+          title="Cardiologist at NHOG"
+          onCreateWeb={handleCreateWeb}
+          showConnections={showConnections}
+          showConnectionsOnMap={showConnectionOnTheMap}
+          onToggleConnections={handleToggleConnections}
+          onToggleConnectionsOnMap={handleToggleConnectionsOnMap}
+        />
+      </MainContent>
     </AppContainer>
   );
 }

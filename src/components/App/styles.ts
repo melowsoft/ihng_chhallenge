@@ -120,3 +120,11 @@ export const LinkTooltip = styled.div`
   max-width: 90%;
   text-align: center;
 `;
+
+export const MainContent = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  gap: 15px;
+`;

@@ -2,21 +2,37 @@ import styled from "styled-components";
 
 export const AppHeader = styled.header`
   display: flex;
-  flex: 1;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 24px;
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
+  background: transparent;
+  border: none;
   height: 64px;
   box-sizing: content-box;
   border-radius: 12px;
+  height: 84px;
+  gap: 20px;
 `;
 
 export const HeaderLeft = styled.div`
   display: flex;
   align-items: center;
   gap: 36px;
+  background-color: #fff;
+  flex: 1;
+  height: 100%;
+  border-radius: 12px;
+  justify-content: space-between;
+  padding: 0 18px;
+`;
+
+export const HeaderRight = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background-color: #fff;
+  height: 100%;
+  border-radius: 12px;
+  padding: 0 18px;
 `;
 
 export const Logo = styled.div`
@@ -53,12 +69,6 @@ export const StatLabel = styled.span`
 export const StatValue = styled.span`
   font-weight: 600;
   color: #111827;
-`;
-
-export const HeaderRight = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 24px;
 `;
 
 export const CreateWebButton = styled.button`

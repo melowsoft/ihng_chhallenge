@@ -43,7 +43,7 @@ const Header: React.FC<HeaderProps> = ({
   onToggleConnectionsOnMap,
 }) => (
   <AppHeader>
-    <HeaderRight>
+    <HeaderLeft>
       <UserInfo>
         <UserAvatar
           src={
@@ -59,8 +59,7 @@ const Header: React.FC<HeaderProps> = ({
           <Title>{title}</Title>
         </UserDetail>
       </UserInfo>
-    </HeaderRight>
-    <HeaderLeft>
+
       <HeaderLeftFirstWrap>
         <ConnectionStats>
           <StatLabel>My Peers:</StatLabel>
@@ -71,7 +70,9 @@ const Header: React.FC<HeaderProps> = ({
 
         <CreateWebButton onClick={onCreateWeb}>Create Web</CreateWebButton>
       </HeaderLeftFirstWrap>
-
+        </HeaderLeft>
+        
+    <HeaderRight>
       <HeaderLeftSecondWrap>
         <ToggleContainer>
           <ToggleSwitch>
@@ -94,7 +95,7 @@ const Header: React.FC<HeaderProps> = ({
           <ToggleLabel>Show my connections on map</ToggleLabel>
         </ToggleContainer>
       </HeaderLeftSecondWrap>
-    </HeaderLeft>
+    </HeaderRight>
   </AppHeader>
 );
 
