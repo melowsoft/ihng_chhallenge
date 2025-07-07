@@ -27,7 +27,7 @@ const fontSizes = {
 
 // Layout components
 export const AppContainer = styled.div`
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: row;
   overflow: hidden;
@@ -102,6 +102,7 @@ export const GraphContainer = styled.div`
   position: relative;
   overflow: hidden;
   background: ${colors.gray100};
+  display: flex;
 `;
 
 export const LinkTooltip = styled.div`
@@ -127,4 +128,16 @@ export const MainContent = styled.div`
   flex-direction: column;
   background-color: transparent;
   gap: 15px;
+`;
+
+export const FilterContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  height: 60px;
+  border-radius: 12px;
+  padding: 10px;
+  gap: 10px;
 `;

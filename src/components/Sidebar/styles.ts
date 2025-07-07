@@ -21,6 +21,7 @@ const fontSizes = {
 // Styled components
 export const SidebarContainer = styled.aside`
   width: 40px;
+  max-height: 90vh;
   background: ${colors.white};
   border-radius: 12px;
   display: flex;

@@ -6,10 +6,8 @@ export const AppHeader = styled.header`
   justify-content: space-between;
   background: transparent;
   border: none;
-  height: 64px;
   box-sizing: content-box;
   border-radius: 12px;
-  height: 84px;
   gap: 20px;
 `;
 
@@ -23,6 +21,7 @@ export const HeaderLeft = styled.div`
   border-radius: 12px;
   justify-content: space-between;
   padding: 0 18px;
+  box-sizing: content-box;
 `;
 
 export const HeaderRight = styled.div`
@@ -33,6 +32,7 @@ export const HeaderRight = styled.div`
   height: 100%;
   border-radius: 12px;
   padding: 0 18px;
+  box-sizing: content-box;
 `;
 
 export const Logo = styled.div`
@@ -48,6 +48,7 @@ export const HeaderLeftFirstWrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  margin: 10px 0;
 `;
 export const HeaderLeftSecondWrap = styled.div`
   display: flex;
@@ -72,11 +73,11 @@ export const StatValue = styled.span`
 `;
 
 export const CreateWebButton = styled.button`
-  padding: 8px 16px;
+  padding: 8px 14px;
   background: #3b82f6;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 12px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
