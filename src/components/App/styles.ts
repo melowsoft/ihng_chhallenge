@@ -1,6 +1,4 @@
-// src/components/App/styles.ts
 import styled from "styled-components";
-import { theme } from "../../styles";
 
 export const AppContainer = styled.div`
   min-height: 100vh;
@@ -11,6 +9,11 @@ export const AppContainer = styled.div`
   padding: ${({ theme }) => theme.spacing[10]};
   gap: ${({ theme }) => theme.spacing[5]};
   background-color: ${({ theme }) => theme.colors.gray50};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    padding: ${({ theme }) => theme.spacing[4]};
+    padding-top: 80px; // Make space for mobile menu button
+  }
 `;
 
 export const MainContent = styled.div`
@@ -19,6 +22,10 @@ export const MainContent = styled.div`
   flex-direction: column;
   background-color: transparent;
   gap: ${({ theme }) => theme.spacing[3]};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    width: 100%;
+  }
 `;
 
 export const FilterContainer = styled.div`
