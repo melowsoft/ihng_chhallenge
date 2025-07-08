@@ -1,3 +1,4 @@
+// src/components/NetworkGraph/index.tsx
 import React, { useRef, useCallback, useEffect, useState } from "react";
 import ForceGraph2D from "react-force-graph-2d";
 import {
@@ -27,11 +28,23 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({
   const graphRef = useRef<any>(null);
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [hoveredLink, setHoveredLink] = useState<NetworkLink | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
   const imageCache = useRef<Map<string, HTMLImageElement>>(new Map());
   const nodePositions = useRef<Map<string, { x: number; y: number }>>(
     new Map()
   );
   const [initialized, setInitialized] = useState(false);
+
+  // Check for mobile viewport
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkIfMobile();
+    window.addEventListener("resize", checkIfMobile);
+    return () => window.removeEventListener("resize", checkIfMobile);
+  }, []);
 
   // Initialize node positions in a scattered pattern
   useEffect(() => {
@@ -41,8 +54,8 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({
       );
       const otherNodes = data.nodes.filter((node) => node !== centerNode);
 
-      // Position other nodes in a circular pattern around the center with reduced radius
-      const radius = 200; // Reduced from 300 to 200 for more compact initial layout
+      // Position other nodes in a circular pattern around the center
+      const radius = isMobile ? 150 : 200; // Smaller radius for mobile
       const angleStep = (2 * Math.PI) / otherNodes.length;
 
       otherNodes.forEach((node, i) => {
@@ -63,24 +76,26 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({
         });
       }, 1500);
     }
-  }, [data.nodes, initialized]);
+  }, [data.nodes, initialized, isMobile]);
 
+  // Center on selected node
   useEffect(() => {
     if (graphRef.current && selectedNode) {
       const timeoutId = setTimeout(() => {
         try {
           const graphInstance = graphRef.current;
           const trackedPosition = nodePositions.current.get(selectedNode);
+
           if (trackedPosition) {
             graphInstance.centerAt(trackedPosition.x, trackedPosition.y, 1000);
-            graphInstance.zoom(1.5, 1000);
+            graphInstance.zoom(isMobile ? 2 : 1.5, 1000);
             return;
           }
 
           const targetNode = data.nodes.find((n) => n.id === selectedNode);
           if (targetNode && targetNode.fx === 0 && targetNode.fy === 0) {
             graphInstance.centerAt(0, 0, 1000);
-            graphInstance.zoom(1.5, 1000);
+            graphInstance.zoom(isMobile ? 2 : 1.5, 1000);
           }
         } catch (error) {
           console.error("Error centering on node:", error);
@@ -89,7 +104,7 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({
 
       return () => clearTimeout(timeoutId);
     }
-  }, [selectedNode, data.nodes]);
+  }, [selectedNode, data.nodes, isMobile]);
 
   const nodeCanvasObject = useCallback(
     (node: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
@@ -98,14 +113,16 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({
       }
 
       const label = node.name;
-      const fontSize = 12 / globalScale;
+      const fontSize = (isMobile ? 10 : 12) / globalScale;
       ctx.font = `${fontSize}px Inter, sans-serif`;
 
       const isSelected = node.id === selectedNode;
       const isHovered = node.id === hoveredNode;
       const isCenterNode = node.fx === 0 && node.fy === 0;
 
-      const nodeSize = isCenterNode ? 40 : 30;
+      // Adjust node sizes for mobile
+      const nodeSize = isCenterNode ? (isMobile ? 30 : 40) : isMobile ? 20 : 30;
+
       ctx.beginPath();
       ctx.arc(node.x, node.y, nodeSize, 0, 2 * Math.PI);
 
@@ -151,18 +168,21 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({
         }
       }
 
-      ctx.fillStyle = "#1F2937";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      const lines = label.split(" ");
-      const lineHeight = fontSize * 1.2;
-      const startY = node.y + nodeSize + 15;
+      // Only show labels on mobile if node is selected or hovered
+      if (!isMobile || isSelected || isHovered) {
+        ctx.fillStyle = "#1F2937";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        const lines = label.split(" ");
+        const lineHeight = fontSize * 1.2;
+        const startY = node.y + nodeSize + (isMobile ? 10 : 15);
 
-      lines.forEach((line: string, i: number) => {
-        ctx.fillText(line, node.x, startY + i * lineHeight);
-      });
+        lines.forEach((line: string, i: number) => {
+          ctx.fillText(line, node.x, startY + i * lineHeight);
+        });
+      }
     },
-    [selectedNode, hoveredNode, imageCache]
+    [selectedNode, hoveredNode, isMobile]
   );
 
   const linkCanvasObject = useCallback(
@@ -188,12 +208,12 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({
         const midX = (start.x + end.x) / 2;
         const midY = (start.y + end.y) / 2;
 
-        ctx.font = `${10 / globalScale}px Inter, sans-serif`;
+        ctx.font = `${(isMobile ? 8 : 10) / globalScale}px Inter, sans-serif`;
         ctx.fillStyle = "#4A90FF";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
 
-        const padding = 5;
+        const padding = 4;
         const textWidth = ctx.measureText(link.label).width;
         ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
         ctx.fillRect(
@@ -207,7 +227,7 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({
         ctx.fillText(link.label, midX, midY);
       }
     },
-    [hoveredLink]
+    [hoveredLink, isMobile]
   );
 
   const handleNodeHover = useCallback(
@@ -240,6 +260,19 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({
     [onLinkHover]
   );
 
+  // Enhanced touch interactions for mobile
+  const handleNodeClick = useCallback(
+    (node: any) => {
+      if (isMobile && graphRef.current) {
+        // Center and zoom on node when clicked on mobile
+        graphRef.current.centerAt(node.x, node.y, 1000);
+        graphRef.current.zoom(2, 1000);
+      }
+      onNodeClick(node);
+    },
+    [onNodeClick, isMobile]
+  );
+
   return (
     <NetworkGraphContainer>
       <ForceGraph2D
@@ -253,13 +286,20 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({
           ctx: CanvasRenderingContext2D
         ) => {
           ctx.fillStyle = color;
-          const nodeSize = node.fx === 0 && node.fy === 0 ? 40 : 30;
+          const nodeSize =
+            node.fx === 0 && node.fy === 0
+              ? isMobile
+                ? 30
+                : 40
+              : isMobile
+              ? 20
+              : 30;
           ctx.beginPath();
           ctx.arc(node.x || 0, node.y || 0, nodeSize, 0, 2 * Math.PI);
           ctx.fill();
         }}
         linkCanvasObject={linkCanvasObject}
-        onNodeClick={onNodeClick}
+        onNodeClick={handleNodeClick}
         onNodeHover={handleNodeHover}
         onNodeDragEnd={(node: any) => {
           node.fx = node.x;
@@ -278,16 +318,19 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({
           onLinkClick(linkData);
         }}
         onLinkHover={handleLinkHover}
-        d3VelocityDecay={0.4}
-        d3AlphaDecay={0.05}
-        warmupTicks={100}
+        d3VelocityDecay={isMobile ? 0.5 : 0.4} // Faster stabilization on mobile
+        d3AlphaDecay={isMobile ? 0.1 : 0.05} // Faster animation decay on mobile
+        warmupTicks={isMobile ? 50 : 100} // Fewer warmup ticks on mobile
         cooldownTicks={0}
-        cooldownTime={3000}
+        cooldownTime={isMobile ? 2000 : 3000} // Shorter cooldown on mobile
         enableZoomInteraction={true}
+        // zoomToFit removed: not a valid prop for ForceGraph2D
         enablePanInteraction={true}
-        enableNodeDrag={true}
+        enableNodeDrag={!isMobile} // Disable node drag on mobile (use tap instead)
         linkDirectionalParticles={0}
         linkDirectionalArrowLength={0}
+        minZoom={isMobile ? 0.5 : 0.8} // Allow more zoom out on mobile
+        maxZoom={isMobile ? 4 : 3} // Allow more zoom in on mobile
       />
     </NetworkGraphContainer>
   );
