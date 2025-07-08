@@ -1,4 +1,3 @@
-// src/components/Sidebar/index.tsx
 import React, { useState } from "react";
 import {
   MagnifyingGlass,
@@ -56,7 +55,6 @@ const Sidebar: React.FC = () => {
 
   return (
     <>
-      {/* Desktop Sidebar (always visible) */}
       <SidebarContainer>
         <SidebarLogo src={LOGO} alt="IHNG Logo" />
         <MenuItemsWrap>
@@ -79,17 +77,12 @@ const Sidebar: React.FC = () => {
         </SidebarBottomWrap>
       </SidebarContainer>
 
-      {/* Mobile Hamburger Button (only visible on mobile) */}
       <MobileMenuButton onClick={toggleMobileMenu}>
         {isMobileOpen ? <X size={24} /> : <List size={24} />}
       </MobileMenuButton>
 
-      {/* Mobile Sidebar Overlay (only visible when menu is open) */}
-      {isMobileOpen && (
-        <MobileSidebarOverlay onClick={toggleMobileMenu} />
-      )}
+      {isMobileOpen && <MobileSidebarOverlay onClick={toggleMobileMenu} />}
 
-      {/* Mobile Sidebar Content (slides in from left) */}
       <MobileSidebarContent isOpen={isMobileOpen}>
         <SidebarLogo src={LOGO} alt="IHNG Logo" />
         <MenuItemsWrap>

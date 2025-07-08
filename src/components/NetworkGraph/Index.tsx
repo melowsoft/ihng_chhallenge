@@ -1,4 +1,3 @@
-// src/components/NetworkGraph/index.tsx
 import React, { useRef, useCallback, useEffect, useState } from "react";
 import ForceGraph2D from "react-force-graph-2d";
 import {
@@ -35,7 +34,6 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({
   );
   const [initialized, setInitialized] = useState(false);
 
-  // Check for mobile viewport
   useEffect(() => {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -46,7 +44,6 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({
     return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
 
-  // Initialize node positions in a scattered pattern
   useEffect(() => {
     if (graphRef.current && data.nodes.length > 0 && !initialized) {
       const centerNode = data.nodes.find(
@@ -54,13 +51,11 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({
       );
       const otherNodes = data.nodes.filter((node) => node !== centerNode);
 
-      // Position other nodes in a circular pattern around the center
-      const radius = isMobile ? 150 : 200; // Smaller radius for mobile
+      const radius = isMobile ? 150 : 200; 
       const angleStep = (2 * Math.PI) / otherNodes.length;
 
       otherNodes.forEach((node, i) => {
         const angle = angleStep * i;
-        // Add slight randomness to prevent perfect alignment
         const jitterRadius = radius * (0.9 + Math.random() * 0.2);
         node.fx = Math.cos(angle) * jitterRadius;
         node.fy = Math.sin(angle) * jitterRadius;
@@ -68,7 +63,6 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({
 
       setInitialized(true);
 
-      // After a delay, release the fixed positions to let the force simulation take over
       setTimeout(() => {
         otherNodes.forEach((node) => {
           node.fx = undefined;
@@ -78,7 +72,6 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({
     }
   }, [data.nodes, initialized, isMobile]);
 
-  // Center on selected node
   useEffect(() => {
     if (graphRef.current && selectedNode) {
       const timeoutId = setTimeout(() => {
@@ -120,7 +113,6 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({
       const isHovered = node.id === hoveredNode;
       const isCenterNode = node.fx === 0 && node.fy === 0;
 
-      // Adjust node sizes for mobile
       const nodeSize = isCenterNode ? (isMobile ? 30 : 40) : isMobile ? 20 : 30;
 
       ctx.beginPath();
@@ -168,7 +160,6 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({
         }
       }
 
-      // Only show labels on mobile if node is selected or hovered
       if (!isMobile || isSelected || isHovered) {
         ctx.fillStyle = "#1F2937";
         ctx.textAlign = "center";
@@ -260,11 +251,9 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({
     [onLinkHover]
   );
 
-  // Enhanced touch interactions for mobile
   const handleNodeClick = useCallback(
     (node: any) => {
       if (isMobile && graphRef.current) {
-        // Center and zoom on node when clicked on mobile
         graphRef.current.centerAt(node.x, node.y, 1000);
         graphRef.current.zoom(2, 1000);
       }
@@ -318,19 +307,19 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({
           onLinkClick(linkData);
         }}
         onLinkHover={handleLinkHover}
-        d3VelocityDecay={isMobile ? 0.5 : 0.4} // Faster stabilization on mobile
-        d3AlphaDecay={isMobile ? 0.1 : 0.05} // Faster animation decay on mobile
-        warmupTicks={isMobile ? 50 : 100} // Fewer warmup ticks on mobile
+        d3VelocityDecay={isMobile ? 0.5 : 0.4} 
+        d3AlphaDecay={isMobile ? 0.1 : 0.05} 
+        warmupTicks={isMobile ? 50 : 100} 
         cooldownTicks={0}
-        cooldownTime={isMobile ? 2000 : 3000} // Shorter cooldown on mobile
+        cooldownTime={isMobile ? 2000 : 3000} 
         enableZoomInteraction={true}
-        // zoomToFit removed: not a valid prop for ForceGraph2D
+     
         enablePanInteraction={true}
-        enableNodeDrag={!isMobile} // Disable node drag on mobile (use tap instead)
+        enableNodeDrag={!isMobile} 
         linkDirectionalParticles={0}
         linkDirectionalArrowLength={0}
-        minZoom={isMobile ? 0.5 : 0.8} // Allow more zoom out on mobile
-        maxZoom={isMobile ? 4 : 3} // Allow more zoom in on mobile
+        minZoom={isMobile ? 0.5 : 0.8} 
+        maxZoom={isMobile ? 4 : 3} 
       />
     </NetworkGraphContainer>
   );

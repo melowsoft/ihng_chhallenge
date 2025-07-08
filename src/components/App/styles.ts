@@ -12,7 +12,7 @@ export const AppContainer = styled.div`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     padding: ${({ theme }) => theme.spacing[4]};
-    padding-top: 80px; // Make space for mobile menu button
+    padding-top: 80px;
   }
 `;
 
@@ -54,9 +54,8 @@ export const GraphContainer = styled.div`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 100%;
-    height: 300px; // Adjust height for mobile
-   flex-direction: column;
-    
+    height: 300px;
+    flex-direction: column;
   }
 `;
 

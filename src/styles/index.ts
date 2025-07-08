@@ -1,4 +1,3 @@
-// src/theme/index.ts
 export const theme = {
   colors: {
     // Primary colors

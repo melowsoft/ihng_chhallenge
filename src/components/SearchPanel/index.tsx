@@ -45,7 +45,7 @@ const SearchPanel: React.FC<SearchPanelProps> = ({ hcps, onSearch }) => {
     setSearchTerm(hcp.name);
     setShowDropdown(false);
     onSearch(hcp);
-    // Blur the input to close the dropdown
+
     if (searchInputRef.current) {
       searchInputRef.current.blur();
     }
@@ -55,14 +55,12 @@ const SearchPanel: React.FC<SearchPanelProps> = ({ hcps, onSearch }) => {
     setSearchTerm("");
     setShowDropdown(false);
     onSearch(null);
-    // Focus back on the input after clear
     if (searchInputRef.current) {
       searchInputRef.current.focus();
     }
   };
 
   const handleInputBlur = () => {
-    // Use setTimeout to allow click events to fire before closing
     setTimeout(() => {
       setShowDropdown(false);
     }, 200);
@@ -117,7 +115,7 @@ const SearchPanel: React.FC<SearchPanelProps> = ({ hcps, onSearch }) => {
             <SearchResultItem
               key={hcp.id}
               onClick={() => handleSelect(hcp)}
-              onMouseDown={(e) => e.preventDefault()} // Prevent input blur before click
+              onMouseDown={(e) => e.preventDefault()}
             >
               <ResultAvatar
                 src={

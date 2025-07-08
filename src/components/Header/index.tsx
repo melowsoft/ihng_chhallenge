@@ -1,4 +1,3 @@
-// src/components/Header/index.tsx
 import React from "react";
 import {
   AppHeader,
@@ -47,7 +46,6 @@ const Header: React.FC<HeaderProps> = ({
   onToggleConnectionsOnMap,
 }) => (
   <AppHeader>
-    {/* Desktop Header */}
     <HeaderLeft>
       <UserInfo>
         <UserAvatar
@@ -76,7 +74,7 @@ const Header: React.FC<HeaderProps> = ({
         <CreateWebButton onClick={onCreateWeb}>Create Web</CreateWebButton>
       </HeaderLeftFirstWrap>
     </HeaderLeft>
-    
+
     <HeaderRight>
       <HeaderLeftSecondWrap>
         <ToggleContainer>
@@ -84,6 +82,8 @@ const Header: React.FC<HeaderProps> = ({
             <ToggleInput
               checked={showConnections}
               onChange={onToggleConnections}
+              type="checkbox"
+              id="show-connections-toggle"
             />
             <ToggleSlider />
           </ToggleSwitch>
@@ -102,7 +102,6 @@ const Header: React.FC<HeaderProps> = ({
       </HeaderLeftSecondWrap>
     </HeaderRight>
 
-    {/* Mobile Header */}
     <MobileHeaderContent>
       <UserInfo>
         <UserAvatar

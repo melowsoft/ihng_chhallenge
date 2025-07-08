@@ -1,7 +1,6 @@
 // src/components/Sidebar/styles.ts
 import styled, { css } from "styled-components";
 
-// Design system constants from theme
 const itemSize = "2.6rem"; // 48px
 
 export const SidebarContainer = styled.aside`
