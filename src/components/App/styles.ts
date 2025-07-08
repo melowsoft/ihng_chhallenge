@@ -38,6 +38,10 @@ export const FilterContainer = styled.div`
   border-radius: ${({ theme }) => theme.radii.xl};
   padding: ${({ theme }) => theme.spacing[2]};
   gap: ${({ theme }) => theme.spacing[2]};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    flex-direction: column;
+    height: auto;
 `;
 
 export const GraphContainer = styled.div`

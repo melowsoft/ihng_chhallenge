@@ -3,6 +3,11 @@ import styled from "styled-components";
 export const ViewFiltersContainer = styled.div`
 display: inline-block;
 width: 25%;
+
+@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  width: 100%;
+  margin-top: ${({ theme }) => theme.spacing[4]};
+}
 `;
 
 export const FilterButton = styled.button`
