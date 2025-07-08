@@ -51,6 +51,13 @@ export const GraphContainer = styled.div`
   background: ${({ theme }) => theme.colors.gray100};
   display: flex;
   border-radius: ${({ theme }) => theme.radii.xl};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    width: 100%;
+    height: 300px; // Adjust height for mobile
+   flex-direction: column;
+    
+  }
 `;
 
 export const LinkTooltip = styled.div`
